@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POLYGON</title>
+</head>
+<body>
+    <canvas id="my_dataviz" width="700" height="700">
+
+</body>
+<script>
+    const url = "http://localhost:8080";
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            let shapes = data.dd;
+            let triangleCentroid = data.triangleCentroid;
+            let quadCentroid = data.quadrilateralCentroid;
+            let eqDis = data.eucilideanDis;
+            draw(shapes, triangleCentroid, quadCentroid, eqDis);
+        })
+        .catch(err => console.log(err));
+
+    function draw(shapes, triangleCentroid, quadCentroid, eqDis) {
+        let canvas = document.getElementById('my_dataviz');
+        let ctx = canvas.getContext('2d');
+        ctx.scale(2,2); //scale 200%
+        ctx.fillStyle = 'wheat'; 
+        ctx.fillRect(0, 0, 700, 700);
+        ctx.fillStyle = 'green';
+        ctx.fillText(`DISTANCE BETWEEN CENTROIDS: "${eqDis}"`, 20, 10);
+        for(let polyIndex = 0; polyIndex <shapes.length; polyIndex++) {
+            ctx.beginPath();
+            ctx.moveTo(shapes[polyIndex].coordinates[0][0], shapes[polyIndex].coordinates[0][1])
+            for(let lineIndex=1; lineIndex<shapes[polyIndex].coordinates.length; lineIndex++) {
+                ctx.fillStyle = 'black'
+
+                ctx.fillText(shapes[polyIndex].name, shapes[polyIndex].coordinates[0][0] -40, shapes[polyIndex].coordinates[0][1] - 10);
+                ctx.fillStyle= 'blue'
+
+                ctx.lineTo(shapes[polyIndex].coordinates[lineIndex][0], shapes[polyIndex].coordinates[lineIndex][1]);
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(shapes[polyIndex].coordinates[lineIndex][0], shapes[polyIndex].coordinates[lineIndex][1], 2, 2)
+                
+            }
+            ctx.lineTo(shapes[polyIndex].coordinates[0][0], shapes[polyIndex].coordinates[0][1])  
+            ctx.stroke();
+        }
+        ctx.fillStyle = 'red';
+        ctx.fillRect(triangleCentroid[0], triangleCentroid[1], 2, 2)
+        ctx.fillRect(quadCentroid[0], quadCentroid[1], 2, 2)
+    }
+  
+    </script>
+</html>

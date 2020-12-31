@@ -3,8 +3,9 @@ const csv = require('csv-parser');
 const express = require('express');
 const app = express();
 const POLYGON = require('./polygon');
+const cors = require('cors');
 
-app.get('/', (req, res) => {
+app.get('/', cors(), (req, res) => {
   let dd = [];
 fs.createReadStream('POLYGON.csv')
   .pipe(csv(['Type', 'Name' , 'Coridnates']))

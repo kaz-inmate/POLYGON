@@ -5,4 +5,4 @@
     - Clone the repo & cd into directory.
     - run npm install to install the required packages 
     - npm start
-    - localhost:8080 on your browser
+    - open index.html file on webbrowser, the visualization should appear
